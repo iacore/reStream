@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Current reStream.sh version
-version="1.3.1"
+version="1.2.0"
 
 # video_filters links:
 # https://ffmpeg.org/doxygen/trunk/pixfmt_8h_source.html
@@ -10,8 +10,8 @@ version="1.3.1"
 rm2_old_firmware_version="3.7.0.1930"
 
 # default values for arguments
-remarkable="${REMARKABLE_IP:-10.11.99.1}" # remarkable IP address
-landscape=true                            # rotate 90 degrees to the right
+remarkable="${REMARKABLE_IP:-11}" # remarkable IP address
+landscape=false                            # rotate 90 degrees to the right
 cursor=false                              # show a cursor where the pen is hovering
 output_path=-                             # display output through ffplay
 format=-                                  # automatic output format
@@ -31,6 +31,10 @@ while [ $# -gt 0 ]; do
             ;;
         -p | --portrait)
             landscape=false
+            shift
+            ;;
+        -l | --landscape)
+            landscape=true
             shift
             ;;
         -c | --cursor)
@@ -200,7 +204,7 @@ if ! lz4 -V >/dev/null; then
 fi
 
 # check if restream binay is present on remarkable
-if ssh_cmd "[ ! -f ~/restream ] && [ ! -f /opt/bin/restream ]"; then
+if ssh_cmd "which restream"; then
     echo "The restream binary is not installed on your reMarkable."
     echo "Please install it using the instruction in the README:"
     echo "https://github.com/rien/reStream/#installation"
