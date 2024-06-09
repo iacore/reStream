@@ -125,13 +125,6 @@ is_current_rm_firmware_version_ge() {
     test "$(printf '%s\n' "$current_rm_firmware_version" "$1" | sort -rV | head -n 1)" = "$current_rm_firmware_version"
 }
 
-# kill reStream on remarkable at the end.
-# shellcheck disable=SC2016
-exit_rm() {
-    ssh_cmd 'kill $(pidof restream)'
-}
-trap exit_rm EXIT INT HUP
-
 # SSH_CONNECTION is a variable on reMarkable => ssh '' instead of ssh ""
 # shellcheck disable=SC2016
 remarkable_ip() {
